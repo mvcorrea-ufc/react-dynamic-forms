@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import firebase from '../firebase';
 
 const FormBuilder = () => {
+  const [formName, setFormName] = useState('');
   const [formFields, setFormFields] = useState([]);
 
   const handleAddField = (field) => {
@@ -11,6 +12,7 @@ const FormBuilder = () => {
   const handleSaveForm = () => {
     // Save the formFields state as JSON to Firebase
     firebase.firestore().collection('formSchema').add({
+      name: formName,
       schema: JSON.stringify(formFields),
     });
     console.log(formFields);
@@ -18,7 +20,12 @@ const FormBuilder = () => {
 
   return (
     <div>
-      {/* Render your form building UI here */}
+      <input
+        type="text"
+        value={formName}
+        onChange={(e) => setFormName(e.target.value)}
+        placeholder="Enter Form Name"
+      />
       <button onClick={() => handleAddField({ type: 'text', label: 'Text Field' })}>
         Add Text Field
       </button>

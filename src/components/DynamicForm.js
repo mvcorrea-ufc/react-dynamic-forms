@@ -1,8 +1,27 @@
-import React from 'react';
 
-const DynamicForm = ({ schema }) => {
-  // Convert the JSON schema back to an array
-  const formFields = JSON.parse(schema);
+import React, { useState, useEffect } from 'react';
+import firebase from '../firebase'; // Firebase configuration file
+import './Styles.css';
+
+const DynamicForm = ({ formName }) => {
+
+  const [formFields, setFormFields] = useState([]);
+
+  useEffect(() => {
+    // Fetch the form schema from 'formSchema' collection in Firebase
+    firebase.firestore().collection('formSchema')
+      .where('name', '==', formName)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const formData = doc.data();
+          setFormFields(JSON.parse(formData.schema));
+        });
+      })
+      .catch((error) => {
+        console.log('Error getting documents: ', error);
+      });
+  }, [formName]);
 
   return (
     <form>
