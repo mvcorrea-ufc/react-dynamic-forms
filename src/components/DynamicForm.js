@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import firebase from '../firebase'; // Firebase configuration file
+import inputTypes from './inputTypes.json'; // Import the JSON file
 import './Styles.css';
 
 const DynamicForm = ({ formName }) => {
@@ -23,7 +24,34 @@ const DynamicForm = ({ formName }) => {
       });
   }, [formName]);
 
+
+
   return (
+    <form>
+      {formFields.map((field, index) => (
+        <div key={index}>
+          <label>{field.label}</label><br/>
+          {field.type === 'select' ? (
+            <select>
+              <option value="">Select an option</option>
+              {inputTypes.types.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input type={field.type} />
+          )}
+        </div>
+      ))}
+    </form>
+  );
+
+
+
+
+/*   return (
     <form>
       {formFields.map((field, index) => (
         <div key={index}>
@@ -32,7 +60,7 @@ const DynamicForm = ({ formName }) => {
         </div>
       ))}
     </form>
-  );
+  ); */
 };
 
 export default DynamicForm;

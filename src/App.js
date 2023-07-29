@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import FormBuilder from './components/FormBuilder';
 import FormList from './components/FormList';
 
 const App = () => {
-  const [schema, setSchema] = useState(null);
-
   return (
     <div>
       <h1>Dynamic Form Builder</h1>
